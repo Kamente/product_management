@@ -2,6 +2,8 @@ package com.productmanagement.backend.service.impl;
 
 import com.productmanagement.backend.dto.request.ProductRequest;
 import com.productmanagement.backend.dto.response.ProductResponse;
+import com.productmanagement.backend.exception.DuplicateResourceException;
+import com.productmanagement.backend.exception.ResourceNotFoundException;
 import com.productmanagement.backend.entity.Product;
 import com.productmanagement.backend.repository.ProductRepository;
 import com.productmanagement.backend.service.ProductService;
@@ -48,7 +50,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponse getProductById(Long id) {
 
         Product product = repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Product not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
         return mapToResponse(product);
     }
@@ -57,7 +59,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponse updateProduct(Long id, ProductRequest request) {
 
         Product product = repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Product not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
         product.setName(request.getName());
         product.setDescription(request.getDescription());
@@ -74,7 +76,7 @@ public class ProductServiceImpl implements ProductService {
     public void deleteProduct(Long id) {
 
         Product product = repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Product not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
         repository.delete(product);
 

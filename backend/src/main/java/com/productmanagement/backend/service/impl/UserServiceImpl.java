@@ -3,6 +3,8 @@ package com.productmanagement.backend.service.impl;
 import com.productmanagement.backend.dto.request.RegisterRequest;
 import com.productmanagement.backend.dto.response.UserResponse;
 import com.productmanagement.backend.dto.request.UpdateUserRequest;
+import com.productmanagement.backend.exception.DuplicateResourceException;
+import com.productmanagement.backend.exception.ResourceNotFoundException;
 import com.productmanagement.backend.entity.Role;
 import com.productmanagement.backend.entity.User;
 import com.productmanagement.backend.repository.UserRepository;
@@ -29,10 +31,10 @@ public class UserServiceImpl implements UserService {
     public UserResponse register(RegisterRequest request){
 
         if(repository.existsByUsername(request.getUsername()))
-            throw new RuntimeException("Username already exists");
+            throw new DuplicateResourceException("Username already exists");
 
         if(repository.existsByEmail(request.getEmail()))
-            throw new RuntimeException("Email already exists");
+            throw new DuplicateResourceException("Email already exists");
 
         User user = User.builder()
                 .username(request.getUsername())
@@ -62,7 +64,7 @@ public class UserServiceImpl implements UserService {
 
         User user = repository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("User not found"));
+                        new ResourceNotFoundException("User not found"));
 
         return map(user);
     }
@@ -73,7 +75,7 @@ public class UserServiceImpl implements UserService {
 
         User user = repository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("User not found"));
+                        new ResourceNotFoundException("User not found"));
 
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
@@ -88,7 +90,7 @@ public class UserServiceImpl implements UserService {
 
         User user = repository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("User not found"));
+                        new ResourceNotFoundException("User not found"));
 
         repository.delete(user);
     }
@@ -98,7 +100,7 @@ public class UserServiceImpl implements UserService {
 
         User user = repository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("User not found"));
+                        new ResourceNotFoundException("User not found"));
 
         user.setRole(Role.ADMIN);
         repository.save(user);
@@ -111,7 +113,7 @@ public class UserServiceImpl implements UserService {
 
         User user = repository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("User not found"));
+                        new ResourceNotFoundException("User not found"));
 
         user.setRole(Role.USER);
         repository.save(user);
