@@ -13,29 +13,32 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable=false, unique=true)
     private String username;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable=false, unique=true)
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable=false)
     private String password;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable=false)
     private Role role;
 
-    @Column(name = "created_at")
+    @Column(name="created_at")
     private LocalDateTime createdAt;
 
     @PrePersist
-    public void prePersist() {
+    public void prePersist(){
         createdAt = LocalDateTime.now();
     }
+
 }

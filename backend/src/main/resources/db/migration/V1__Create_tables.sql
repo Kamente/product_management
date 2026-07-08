@@ -1,11 +1,10 @@
-CREATE TYPE user_role AS ENUM ('ADMIN', 'USER');
-
 CREATE TABLE users (
     id BIGSERIAL PRIMARY KEY,
-    username VARCHAR (100) NOT NULL UNIQUE,
-    email VARCHAR (150) NOT NULL UNIQUE,
-    password VARCHAR (255) NOT NULL,
-    role user_role NOT NULL,
+    username VARCHAR(100) NOT NULL UNIQUE,
+    email VARCHAR(150) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(20) NOT NULL
+        CHECK (role IN ('ADMIN', 'USER')),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -14,7 +13,7 @@ CREATE TABLE products (
     name VARCHAR(255) NOT NULL,
     description TEXT,
     category VARCHAR(100),
-    price decimal(10,2) NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
     quantity INTEGER NOT NULL DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
