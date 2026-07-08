@@ -5,14 +5,13 @@ import com.productmanagement.backend.dto.response.ProductResponse;
 import com.productmanagement.backend.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-
 @RequestMapping("/api/products")
-
 public class ProductController {
 
     private final ProductService service;
@@ -21,58 +20,48 @@ public class ProductController {
         this.service = service;
     }
 
-    @PostMapping
-
-    @ResponseStatus(HttpStatus.CREATED)
-
-    public ProductResponse create(
-
-            @Valid @RequestBody ProductRequest request) {
-
-        return service.createProduct(request);
-
-    }
-
+    // Everyone logged in can view products
     @GetMapping
-
-    public List<ProductResponse> getAll() {
-
+    public List<ProductResponse> getAllProducts() {
         return service.getAllProducts();
-
     }
 
     @GetMapping("/{id}")
-
     public ProductResponse getOne(
-
             @PathVariable Long id) {
 
         return service.getProductById(id);
-
     }
 
+    // ADMIN ONLY
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public ProductResponse create(
+            @Valid
+            @RequestBody ProductRequest request) {
+
+        return service.createProduct(request);
+    }
+
+    // ADMIN ONLY
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-
     public ProductResponse update(
-
             @PathVariable Long id,
-
-            @Valid @RequestBody ProductRequest request) {
+            @Valid
+            @RequestBody ProductRequest request) {
 
         return service.updateProduct(id, request);
-
     }
 
+    // ADMIN ONLY
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
-
     @ResponseStatus(HttpStatus.NO_CONTENT)
-
     public void delete(
-
             @PathVariable Long id) {
 
         service.deleteProduct(id);
-
     }
-
 }

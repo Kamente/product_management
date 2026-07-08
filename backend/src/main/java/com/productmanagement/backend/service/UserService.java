@@ -14,4 +14,5 @@ public interface UserService {
     void deleteUser(Long id);
     UserResponse promoteToAdmin(Long id);
     UserResponse demoteToUser(Long id);
+    UserResponse getCurrentUser ();
 }

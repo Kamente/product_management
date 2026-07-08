@@ -11,6 +11,8 @@ import com.productmanagement.backend.repository.UserRepository;
 import com.productmanagement.backend.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
 
@@ -63,6 +65,22 @@ public class UserServiceImpl implements UserService {
     public UserResponse getUser(Long id){
 
         User user = repository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("User not found"));
+
+        return map(user);
+    }
+
+
+    @Override
+    public UserResponse getCurrentUser() {
+
+        Authentication authentication =
+                SecurityContextHolder.getContext().getAuthentication();
+
+        String username = authentication.getName();
+
+        User user = repository.findByUsername(username)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("User not found"));
 

@@ -7,6 +7,7 @@ import com.productmanagement.backend.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 
@@ -31,12 +32,20 @@ public class UserController {
         return service.register(request);
     }
 
-    @GetMapping
+    @GetMapping("/me")
+    public UserResponse me() {
+        return service.getCurrentUser();
+    }
 
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping
     public List<UserResponse> getAll(){
         return service.getAllUsers();
-
     }
+
+
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public UserResponse getUser(@PathVariable Long id){
 
@@ -44,6 +53,7 @@ public class UserController {
 
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public UserResponse updateUser(
             @PathVariable Long id,
@@ -53,6 +63,7 @@ public class UserController {
 
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable Long id){
 
@@ -60,6 +71,7 @@ public class UserController {
 
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}/promote")
     public UserResponse promote(@PathVariable Long id){
 
@@ -67,6 +79,7 @@ public class UserController {
 
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}/demote")
     public UserResponse demote(@PathVariable Long id){
 
