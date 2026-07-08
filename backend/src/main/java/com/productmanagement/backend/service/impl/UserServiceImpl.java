@@ -2,6 +2,7 @@ package com.productmanagement.backend.service.impl;
 
 import com.productmanagement.backend.dto.request.RegisterRequest;
 import com.productmanagement.backend.dto.response.UserResponse;
+import com.productmanagement.backend.dto.request.UpdateUserRequest;
 import com.productmanagement.backend.entity.Role;
 import com.productmanagement.backend.entity.User;
 import com.productmanagement.backend.repository.UserRepository;
@@ -56,8 +57,70 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    private UserResponse map(User user){
+    @Override
+    public UserResponse getUser(Long id){
 
+        User user = repository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("User not found"));
+
+        return map(user);
+    }
+
+    @Override
+    public UserResponse updateUser(Long id,
+                                   UpdateUserRequest request){
+
+        User user = repository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("User not found"));
+
+        user.setUsername(request.getUsername());
+        user.setEmail(request.getEmail());
+
+        repository.save(user);
+
+        return map(user);
+    }
+
+    @Override
+    public void deleteUser(Long id){
+
+        User user = repository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("User not found"));
+
+        repository.delete(user);
+    }
+
+    @Override
+    public UserResponse promoteToAdmin(Long id){
+
+        User user = repository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("User not found"));
+
+        user.setRole(Role.ADMIN);
+        repository.save(user);
+        return map(user);
+
+    }
+
+    @Override
+    public UserResponse demoteToUser(Long id){
+
+        User user = repository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("User not found"));
+
+        user.setRole(Role.USER);
+        repository.save(user);
+
+        return map(user);
+
+    }
+
+    private UserResponse map(User user){
         UserResponse response = new UserResponse();
 
         response.setId(user.getId());
@@ -66,7 +129,6 @@ public class UserServiceImpl implements UserService {
         response.setRole(user.getRole());
 
         return response;
-
     }
 
 }
