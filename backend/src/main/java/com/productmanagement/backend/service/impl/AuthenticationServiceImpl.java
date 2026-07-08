@@ -3,7 +3,9 @@ package com.productmanagement.backend.service.impl;
 import com.productmanagement.backend.dto.request.LoginRequest;
 import com.productmanagement.backend.dto.response.LoginResponse;
 import com.productmanagement.backend.entity.User;
+import com.productmanagement.backend.exception.ResourceNotFoundException;
 import com.productmanagement.backend.repository.UserRepository;
+import com.productmanagement.backend.security.JwtService;
 import com.productmanagement.backend.service.AuthenticationService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,33 +14,49 @@ import org.springframework.stereotype.Service;
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final UserRepository repository;
+
     private final PasswordEncoder passwordEncoder;
 
+    private final JwtService jwtService;
+
     public AuthenticationServiceImpl(UserRepository repository,
-                                     PasswordEncoder passwordEncoder) {
+                                     PasswordEncoder passwordEncoder,
+                                     JwtService jwtService){
 
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
+
     }
 
     @Override
-    public LoginResponse login(LoginRequest request) {
+    public LoginResponse login(LoginRequest request){
 
-        User user = repository.findByEmail(request.getEmail())
+        User user = repository.findByUsername(request.getUsername())
+
                 .orElseThrow(() ->
-                        new RuntimeException("Invalid email or password"));
 
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid email or password");
+                        new ResourceNotFoundException("Invalid username or password"));
+
+        if(!passwordEncoder.matches(request.getPassword(),
+                user.getPassword())){
+
+            throw new ResourceNotFoundException("Invalid username or password");
+
         }
 
-        return LoginResponse.builder()
-                .id(user.getId())
-                .username(user.getUsername())
-                .email(user.getEmail())
-                .role(user.getRole())
-                .message("Login successful")
-                .build();
+        String token = jwtService.generateToken(user.getUsername());
+
+        return new LoginResponse(
+
+                token,
+
+                user.getUsername(),
+
+                user.getRole().name()
+
+        );
+
     }
 
 }

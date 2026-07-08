@@ -1,15 +1,15 @@
 package com.productmanagement.backend.dto.response;
 
-import com.productmanagement.backend.entity.Role;
-import lombok.Builder;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-@Builder
+@Getter
+@Setter
+@AllArgsConstructor
 public class LoginResponse {
-    private Long id;
+    private String token;
     private String username;
-    private String email;
-    private Role role;
-    private String message;
+    private String role;
+
 }

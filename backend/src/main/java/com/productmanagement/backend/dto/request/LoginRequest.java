@@ -1,15 +1,16 @@
 package com.productmanagement.backend.dto.request;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class LoginRequest {
-    @Email
-    @NotBlank
-    private String email;
+    @NotBlank(message = "Username is required")
+    private String username;
 
-    @NotBlank
+    @NotBlank(message = "Password is required")
     private String password;
+
 }

@@ -9,15 +9,22 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-    private final AuthenticationService authenticationService;
-    public AuthController(AuthenticationService authenticationService) {
 
+    private final AuthenticationService authenticationService;
+
+    public AuthController(AuthenticationService authenticationService){
         this.authenticationService = authenticationService;
     }
 
     @PostMapping("/login")
-    public LoginResponse login(@Valid @RequestBody LoginRequest request) {
+    public LoginResponse login(
+            @Valid
+            @RequestBody
+
+            LoginRequest request){
 
         return authenticationService.login(request);
+
     }
+
 }
