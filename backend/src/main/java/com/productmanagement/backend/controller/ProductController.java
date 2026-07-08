@@ -7,8 +7,11 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
+
+import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("/api/products")
@@ -22,8 +25,26 @@ public class ProductController {
 
     // Everyone logged in can view products
     @GetMapping
-    public List<ProductResponse> getAllProducts() {
-        return service.getAllProducts();
+    public Page<ProductResponse> getAllProducts(
+
+            @RequestParam(defaultValue = "0")
+            int page,
+
+            @RequestParam(defaultValue = "10")
+            int size,
+
+            @RequestParam(defaultValue = "id")
+            String sortBy,
+
+            @RequestParam(defaultValue = "asc")
+            String direction) {
+
+        return service.getAllProducts(
+                page,
+                size,
+                sortBy,
+                direction);
+
     }
 
     @GetMapping("/{id}")
@@ -63,5 +84,46 @@ public class ProductController {
             @PathVariable Long id) {
 
         service.deleteProduct(id);
+    }
+
+    @GetMapping("/search")
+    public Page<ProductResponse> search(
+
+            @RequestParam(required = false)
+            String keyword,
+
+            @RequestParam(required = false)
+            String category,
+
+            @RequestParam(required = false)
+            BigDecimal minPrice,
+
+            @RequestParam(required = false)
+            BigDecimal maxPrice,
+
+            @RequestParam(defaultValue = "0")
+            int page,
+
+            @RequestParam(defaultValue = "10")
+            int size,
+
+            @RequestParam(defaultValue = "id")
+            String sortBy,
+
+            @RequestParam(defaultValue = "asc")
+            String direction){
+
+        return service.searchProducts(
+                keyword,
+                category,
+                minPrice,
+                maxPrice,
+                page,
+                size,
+                sortBy,
+                direction
+
+        );
+
     }
 }
