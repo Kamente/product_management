@@ -1,53 +1,98 @@
+import {useContext} from "react";
+import {AuthContext} from "../../contexts/AuthContext";
 import DashboardLayout from "../../layouts/DashboardLayout";
+
 import {
-    Avatar,
-    Box,
-    Paper,
-    Typography
+Paper,
+Typography,
+Stack,
+Avatar,
+Divider,
+Chip,
+Button
 } from "@mui/material";
 
 export default function Profile(){
+
+    const {user}=useContext(AuthContext);
 
     return(
 
         <DashboardLayout>
 
-            <Typography
-                variant="h4"
-                mb={3}
-            >
-                My Profile
-            </Typography>
+            <Paper sx={{p:5,maxWidth:700,mx:"auto"}}>
 
-            <Paper sx={{ p:4 }}>
-
-                <Avatar
-                    sx={{
-                        width:80,
-                        height:80,
-                        mb:2
-                    }}
+                <Stack
+                    spacing={3}
+                    alignItems="center"
                 >
-                    A
-                </Avatar>
 
-                <Typography>
+                    <Avatar
+                        sx={{
+                            width:100,
+                            height:100,
+                            fontSize:40
+                        }}
+                    >
+                        {user?.username?.charAt(0).toUpperCase()}
+                    </Avatar>
 
-                    Username
+                    <Typography variant="h4">
 
-                </Typography>
+                        {user?.username}
 
-                <Typography>
+                    </Typography>
 
-                    Email
+                    <Chip
+                        label={user?.role}
+                        color="primary"
+                    />
 
-                </Typography>
+                </Stack>
 
-                <Typography>
+                <Divider sx={{my:4}}/>
 
-                    Role
+                <Stack spacing={2}>
 
-                </Typography>
+                    <Typography>
+
+                        <strong>Username:</strong> {user?.username}
+
+                    </Typography>
+
+                    <Typography>
+
+                        <strong>Role:</strong> {user?.role}
+
+                    </Typography>
+
+                    <Typography>
+
+                        <strong>Session:</strong> Active
+
+                    </Typography>
+
+                </Stack>
+
+                <Stack
+                    direction="row"
+                    spacing={2}
+                    mt={4}
+                >
+
+                    <Button variant="contained">
+
+                        Change Password
+
+                    </Button>
+
+                    <Button variant="outlined">
+
+                        Edit Profile
+
+                    </Button>
+
+                </Stack>
 
             </Paper>
 

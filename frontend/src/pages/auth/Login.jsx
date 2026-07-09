@@ -1,37 +1,24 @@
 import {
-
     Box,
-
     Button,
-
     Card,
-
     CardContent,
-
     TextField,
-
     Typography
-
 } from "@mui/material";
 
 import { useState } from "react";
-
 import { useNavigate } from "react-router-dom";
-
 import authService from "../../services/authService";
-
 import { useAuth } from "../../contexts/AuthContext";
 
 const Login = () => {
 
     const navigate = useNavigate();
-
     const { login } = useAuth();
-
     const [form, setForm] = useState({
 
         username: "",
-
         password: ""
 
     });

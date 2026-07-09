@@ -1,28 +1,21 @@
 import api from "../api/axios";
-export const getUsers = () => {
-    return api.get("/users");
-};
 
-export const getUser = (id) => {
-    return api.get(`/users/${id}`);
-};
+export const getUsers=()=>api.get("/users");
 
-export const createUser = (user) => {
-    return api.post("/users/register", user);
-};
+export const createUser=(user)=>
+api.post("/users/register",user);
 
-export const updateUser = (id, user) => {
-    return api.put(`/users/${id}`, user);
-};
+export const updateUser=(id,user)=>
+api.put(`/users/${id}`,user);
 
-export const deleteUser = (id) => {
-    return api.delete(`/users/${id}`);
-};
+export const deleteUser=(id)=>
+api.delete(`/users/${id}`);
 
-export const promoteUser = (id) => {
-    return api.put(`/users/${id}/promote`);
-};
+export const promoteUser=(id)=>
+api.put(`/users/${id}/promote`);
 
-export const demoteUser = (id) => {
-    return api.put(`/users/${id}/demote`);
-};
+export const demoteUser=(id)=>
+api.put(`/users/${id}/demote`);
+
+export const getProfile=()=>
+api.get("/users/profile");
