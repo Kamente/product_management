@@ -9,17 +9,19 @@ import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Value;
+
 @Service
 public class JwtService {
+    @Value("${jwt.secret}")
+    private String secret;
 
-    private static final String SECRET =
-            "ProductManagementSystemSecretJwtKey2026SuperSecureBackendSecret123456789";
+    @Value("${jwt.expiration}")
+    private long expiration;
 
-    private final SecretKey key =
-            Keys.hmacShaKeyFor(SECRET.getBytes());
-
-    private final long EXPIRATION =
-            1000 * 60 * 60 * 24;
+    private SecretKey getKey() {
+        return Keys.hmacShaKeyFor(secret.getBytes());
+    }
 
     public String generateToken(String username){
 
@@ -29,9 +31,9 @@ public class JwtService {
 
                 .issuedAt(new Date())
 
-                .expiration(new Date(System.currentTimeMillis() + EXPIRATION))
+                .expiration(new Date(System.currentTimeMillis() + expiration))
 
-                .signWith(key, SignatureAlgorithm.HS256)
+                .signWith(getKey(), SignatureAlgorithm.HS256)
 
                 .compact();
 
@@ -57,7 +59,7 @@ public class JwtService {
 
         return Jwts.parser()
 
-                .verifyWith(key)
+                .verifyWith(getKey())
 
                 .build()
 
