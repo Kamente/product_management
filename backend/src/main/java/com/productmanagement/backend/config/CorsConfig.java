@@ -15,7 +15,8 @@ public class CorsConfig {
                 "http://localhost:5173",
                 "http://localhost:5174",
                 "https://your-frontend-url.onrender.com",
-                "https://kamente.github.io"
+                "https://kamente.github.io",
+                "https://product-management-eight-bice.vercel.app/"
         ));
         configuration.setAllowedMethods(List.of(
                 "GET",
