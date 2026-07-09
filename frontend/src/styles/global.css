@@ -1,0 +1,27 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,
+body,
+#root{
+    width:100%;
+    min-height:100vh;
+}
+
+body{
+    background:#F8FAFC;
+    font-family:Roboto,sans-serif;
+    color:#1E293B;
+}
+
+a{
+    text-decoration:none;
+    coor:inherit;
+}
+
+button{
+    cursor:pointer;
+}

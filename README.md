@@ -4,3 +4,8 @@
 - Java Spring Boot
 
 
+## Admin login credentials:
+- username: admin
+- password: Admin123
+
+## USER user credentials:
