@@ -1,12 +1,38 @@
+import { useEffect, useState } from "react";
+import { loadDashboardStats } from "../../services/dashboardService";
+
 import DashboardLayout from "../../layouts/DashboardLayout";
+
 import {
-    Box,
     Grid,
     Paper,
     Typography
 } from "@mui/material";
 
 export default function Dashboard() {
+
+    const [stats, setStats] = useState({
+        productCount: 0,
+        userCount: 0,
+        categoryCount: 0
+    });
+
+    useEffect(() => {
+
+        async function load() {
+            try {
+                const data = await loadDashboardStats();
+                setStats(data);
+
+            } catch (error) {
+                console.error("Failed to load dashboard statistics", error);
+            }
+
+        }
+
+        load();
+
+    }, []);
 
     return (
 
@@ -23,22 +49,30 @@ export default function Dashboard() {
             <Grid container spacing={3}>
 
                 <Grid item xs={12} md={4}>
-                    <Paper sx={{ p:3 }}>
+
+                    <Paper sx={{ p: 3 }}>
+
                         <Typography variant="h6">
+
                             Products
+
                         </Typography>
 
                         <Typography
                             variant="h3"
                             color="primary"
                         >
-                            0
+
+                            {stats.productCount}
+
                         </Typography>
+
                     </Paper>
+
                 </Grid>
 
                 <Grid item xs={12} md={4}>
-                    <Paper sx={{ p:3 }}>
+                    <Paper sx={{ p: 3 }}>
                         <Typography variant="h6">
                             Users
                         </Typography>
@@ -47,24 +81,33 @@ export default function Dashboard() {
                             variant="h3"
                             color="primary"
                         >
-                            0
+                            {stats.userCount}
                         </Typography>
                     </Paper>
+                    
                 </Grid>
 
                 <Grid item xs={12} md={4}>
-                    <Paper sx={{ p:3 }}>
+
+                    <Paper sx={{ p: 3 }}>
+
                         <Typography variant="h6">
+
                             Categories
+
                         </Typography>
 
                         <Typography
                             variant="h3"
                             color="primary"
                         >
-                            0
+
+                            {stats.categoryCount}
+
                         </Typography>
+
                     </Paper>
+
                 </Grid>
 
             </Grid>

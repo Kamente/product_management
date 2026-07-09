@@ -5,41 +5,38 @@ export const getProducts = (
     size = 10,
     sortBy = "id",
     direction = "asc"
-) => {
-
-    return api.get("/products", {
-
-        params: {
-            page,
-            size,
-            sortBy,
-            direction
-        }
-
+) =>
+    api.get("/products", {
+        params: { page, size, sortBy, direction }
     });
 
-};
+export const getProduct = (id) =>
+    api.get(`/products/${id}`);
 
-export const createProduct = (product) => {
+export const createProduct = (product) =>
+    api.post("/products", product);
 
-    return api.post("/products", product);
+export const updateProduct = (id, product) =>
+    api.put(`/products/${id}`, product);
 
-};
+export const deleteProduct = (id) =>
+    api.delete(`/products/${id}`);
 
-export const updateProduct = (id, product) => {
-
-    return api.put(`/products/${id}`, product);
-
-};
-
-export const deleteProduct = (id) => {
-
-    return api.delete(`/products/${id}`);
-
-};
-
-export const getProduct = (id) => {
-
-    return api.get(`/products/${id}`);
-
-};
+export const searchProducts = (
+    keyword,
+    category = "",
+    minPrice = "",
+    maxPrice = "",
+    page = 0,
+    size = 10
+) =>
+    api.get("/products/search", {
+        params: {
+            keyword,
+            category,
+            minPrice,
+            maxPrice,
+            page,
+            size
+        }
+    });

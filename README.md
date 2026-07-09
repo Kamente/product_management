@@ -9,3 +9,8 @@
 - password: Admin123
 
 ## USER user credentials:
+
+
+deployment
+- backend: render
+- frontend: githubpages

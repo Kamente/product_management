@@ -1,81 +1,97 @@
 import {
-
     Table,
     TableHead,
-    TableBody,
     TableRow,
     TableCell,
-    IconButton
-
+    TableBody,
+    IconButton,
+    TablePagination
 } from "@mui/material";
 
 import EditIcon from "@mui/icons-material/Edit";
-
 import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function ProductTable({
     products,
+    page,
+    rowsPerPage,
+    totalElements,
+    onPageChange,
+    onRowsPerPageChange,
     onEdit,
     onDelete
+}) {
 
-}){
+    return (
+        <>
+            <Table>
 
-    return(
-        <Table>
-            <TableHead>
+                <TableHead>
 
-                <TableRow>
-                    <TableCell>ID</TableCell>
-                    <TableCell>Name</TableCell>
-                    <TableCell>Category</TableCell>
-                    <TableCell>Price</TableCell>
-                    <TableCell>Quantity</TableCell>
-                    <TableCell>Actions</TableCell>
-                </TableRow>
-            </TableHead>
+                    <TableRow>
+                        <TableCell>ID</TableCell>
+                        <TableCell>Name</TableCell>
+                        <TableCell>Category</TableCell>
+                        <TableCell>Price</TableCell>
+                        <TableCell>Quantity</TableCell>
+                        <TableCell align="center">Actions</TableCell>
+                    </TableRow>
 
-            <TableBody>
+                </TableHead>
 
-                {
+                <TableBody>
 
-                    products.map(product=>(
+                    {products.map(product => (
 
-                        <TableRow key={product.id}>
+                        <TableRow key={product.id} hover>
 
                             <TableCell>{product.id}</TableCell>
+
                             <TableCell>{product.name}</TableCell>
+
                             <TableCell>{product.category}</TableCell>
-                            <TableCell>{product.price}</TableCell>
-                            <TableCell>{product.quantity}</TableCell>
+
                             <TableCell>
+                                KSh {Number(product.price).toLocaleString()}
+                            </TableCell>
+
+                            <TableCell>{product.quantity}</TableCell>
+
+                            <TableCell align="center">
 
                                 <IconButton
-                                    onClick={()=>onEdit(product)}
+                                    color="primary"
+                                    onClick={() => onEdit(product)}
                                 >
-
                                     <EditIcon/>
-
                                 </IconButton>
 
                                 <IconButton
                                     color="error"
-                                    onClick={()=>onDelete(product.id)}
+                                    onClick={() => onDelete(product)}
                                 >
-
                                     <DeleteIcon/>
-
                                 </IconButton>
 
                             </TableCell>
 
                         </TableRow>
 
-                    ))
+                    ))}
 
-                }
+                </TableBody>
 
-            </TableBody>
-        </Table>
+            </Table>
+
+            <TablePagination
+                component="div"
+                page={page}
+                rowsPerPage={rowsPerPage}
+                count={totalElements}
+                onPageChange={onPageChange}
+                onRowsPerPageChange={onRowsPerPageChange}
+            />
+        </>
     );
 
 }
