@@ -11,6 +11,8 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
+import {useAuth} from "../../contexts/AuthContext";
+
 export default function ProductTable({
     products,
     page,
@@ -20,28 +22,41 @@ export default function ProductTable({
     onRowsPerPageChange,
     onEdit,
     onDelete
-}) {
+}){
 
-    return (
+    const {user}=useAuth();
+
+    const isAdmin=user?.role==="ADMIN";
+
+    return(
         <>
+
             <Table>
 
                 <TableHead>
 
                     <TableRow>
+
                         <TableCell>ID</TableCell>
                         <TableCell>Name</TableCell>
+                        <TableCell>Description</TableCell>
                         <TableCell>Category</TableCell>
-                        <TableCell>Price</TableCell>
-                        <TableCell>Quantity</TableCell>
-                        <TableCell align="center">Actions</TableCell>
+                        <TableCell align="right">Price</TableCell>
+                        <TableCell align="center">Quantity</TableCell>
+
+                        {isAdmin&&(
+                            <TableCell align="center">
+                                Actions
+                            </TableCell>
+                        )}
+
                     </TableRow>
 
                 </TableHead>
 
                 <TableBody>
 
-                    {products.map(product => (
+                    {products.map(product=>(
 
                         <TableRow key={product.id} hover>
 
@@ -49,31 +64,37 @@ export default function ProductTable({
 
                             <TableCell>{product.name}</TableCell>
 
+                            <TableCell>{product.description}</TableCell>
+
                             <TableCell>{product.category}</TableCell>
 
-                            <TableCell>
+                            <TableCell align="right">
                                 KSh {Number(product.price).toLocaleString()}
                             </TableCell>
 
-                            <TableCell>{product.quantity}</TableCell>
-
                             <TableCell align="center">
-
-                                <IconButton
-                                    color="primary"
-                                    onClick={() => onEdit(product)}
-                                >
-                                    <EditIcon/>
-                                </IconButton>
-
-                                <IconButton
-                                    color="error"
-                                    onClick={() => onDelete(product)}
-                                >
-                                    <DeleteIcon/>
-                                </IconButton>
-
+                                {product.quantity}
                             </TableCell>
+
+                            {isAdmin&&(
+                                <TableCell align="center">
+
+                                    <IconButton
+                                        color="primary"
+                                        onClick={()=>onEdit(product)}
+                                    >
+                                        <EditIcon/>
+                                    </IconButton>
+
+                                    <IconButton
+                                        color="error"
+                                        onClick={()=>onDelete(product)}
+                                    >
+                                        <DeleteIcon/>
+                                    </IconButton>
+
+                                </TableCell>
+                            )}
 
                         </TableRow>
 
@@ -85,12 +106,13 @@ export default function ProductTable({
 
             <TablePagination
                 component="div"
+                count={totalElements}
                 page={page}
                 rowsPerPage={rowsPerPage}
-                count={totalElements}
                 onPageChange={onPageChange}
                 onRowsPerPageChange={onRowsPerPageChange}
             />
+
         </>
     );
 
