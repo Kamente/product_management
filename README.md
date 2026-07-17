@@ -12,7 +12,7 @@ The application provides secure product and user management through a RESTful AP
 - username: justin
 - password: JustinM
 
-
+#### Remember to clear the browser's local storage (under application (DOM)) cache, when you login later and get a 'login failed'
 
 ---
 

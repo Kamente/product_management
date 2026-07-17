@@ -116,6 +116,27 @@ export default function Products(){
 
     }
 
+    const exportJSON=()=>{
+
+        const json=JSON.stringify(products,null,2);
+
+        const blob=new Blob([json],{
+            type:"application/json"
+        });
+
+        const url=window.URL.createObjectURL(blob);
+
+        const link=document.createElement("a");
+
+        link.href=url;
+        link.download="products.json";
+
+        link.click();
+
+        window.URL.revokeObjectURL(url);
+
+};
+
     async function handleSave(product){
 
         try{
@@ -287,5 +308,6 @@ export default function Products(){
         </DashboardLayout>
 
     );
+    
 
 }
